@@ -16,8 +16,6 @@ jobs:
           outputs: |
             dist/github-snake.svg
             dist/github-snake-dark.svg
-          theme: github-light
-          dark_theme: github-dark
       - uses: crazy-max/ghaction-github-pages@v3
         with:
           target_branch: output
