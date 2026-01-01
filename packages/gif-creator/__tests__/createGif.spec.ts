@@ -1,31 +1,29 @@
-import * as fs from "fs";
-import * as path from "path";
-import { it, expect } from "bun:test";
-import { AnimationOptions, createGif } from "..";
+import { expect, it } from "bun:test";
+import { getBestRoute } from "@snk/solver/getBestRoute";
 import * as grids from "@snk/types/__fixtures__/grid";
 import { snake3 as snake } from "@snk/types/__fixtures__/snake";
 import { createSnakeFromCells, nextSnake } from "@snk/types/snake";
-import { getBestRoute } from "@snk/solver/getBestRoute";
-import type { Options as DrawOptions } from "@snk/draw/drawWorld";
+import * as fs from "fs";
+import * as path from "path";
+import { basePalettes } from "../../action/palettes";
+import { type AnimationOptions, createGif, type DrawOptions } from "..";
 
 const upscale = 1;
 const drawOptions: DrawOptions = {
   sizeDotBorderRadius: 2 * upscale,
   sizeCell: 16 * upscale,
   sizeDot: 12 * upscale,
-  colorDotBorder: "#1b1f230a",
-  colorDots: { 1: "#9be9a8", 2: "#40c463", 3: "#30a14e", 4: "#216e39" },
-  colorEmpty: "#ebedf0",
-  colorSnake: "purple",
+  ...basePalettes["github-dark"],
 };
 
-const animationOptions: AnimationOptions = { frameDuration: 200, step: 1 };
+const animationOptions: AnimationOptions = {
+  stepDurationMs: 200,
+  frameByStep: 1,
+};
 
 const dir = path.resolve(__dirname, "__snapshots__");
 
-try {
-  fs.mkdirSync(dir);
-} catch (err) {}
+fs.mkdirSync(dir, { recursive: true });
 
 for (const key of [
   "empty",

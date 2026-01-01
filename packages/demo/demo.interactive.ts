@@ -13,7 +13,6 @@ import { userContributionToGrid } from "@snk/action/userContributionToGrid";
 import { createSvg } from "@snk/svg-creator";
 import { createRpcClient } from "./worker-utils";
 import type { API as WorkerAPI } from "./demo.interactive.worker";
-import { AnimationOptions } from "@snk/gif-creator";
 import { basePalettes } from "@snk/action/palettes";
 
 const createForm = ({
@@ -202,11 +201,14 @@ const createViewer = ({
   schemaSelect.style.alignSelf = "flex-start";
   schemaSelect.value = "github-light";
   schemaSelect.addEventListener("change", () => {
-    Object.assign(drawOptions, basePalettes[schemaSelect.value]);
+    Object.assign(
+      drawOptions,
+      basePalettes[schemaSelect.value as keyof typeof basePalettes],
+    );
 
     svgString = createSvg(grid0, cells, chain, drawOptions, {
-      frameDuration: 100,
-    } as AnimationOptions);
+      stepDurationMs: 100,
+    });
     const svgImageUri = `data:image/*;charset=utf-8;base64,${btoa(svgString)}`;
     svgLink.href = svgImageUri;
 
@@ -239,8 +241,8 @@ const createViewer = ({
   // svg
   const svgLink = document.createElement("a");
   let svgString = createSvg(grid0, cells, chain, drawOptions, {
-    frameDuration: 100,
-  } as AnimationOptions);
+    stepDurationMs: 100,
+  });
   const svgImageUri = `data:image/*;charset=utf-8;base64,${btoa(svgString)}`;
   svgLink.href = svgImageUri;
   svgLink.innerText = "github-user-contribution.svg";
